@@ -23,14 +23,16 @@ const Header = () => {
       <Item key="home" icon={<HomeOutlined />}>
         <Link to="/">Home</Link>
       </Item>
-      <Item key="login" icon={<UserOutlined />} className="float-end">
-        <Link to="/login">Login</Link>
-      </Item>
-      <Item key="register" icon={<UserAddOutlined />} className="float-end">
+
+      <Item key="register" icon={<UserAddOutlined />} className="float-right">
         <Link to="/register">Register</Link>
       </Item>
 
-      <SubMenu key="SubMenu" icon={<SettingOutlined />} title="UserName">
+      <Item key="login" icon={<UserOutlined />} className="float-right">
+        <Link to="/login">Login</Link>
+      </Item>
+
+      <SubMenu icon={<SettingOutlined />} title="Username">
         <Item key="setting:1">Option 1</Item>
         <Item key="setting:2">Option 2</Item>
       </SubMenu>
