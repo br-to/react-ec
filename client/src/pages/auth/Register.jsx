@@ -3,12 +3,11 @@ import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Register = () => {
+const Register = ({ history }) => {
   const [email, setEmail] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
       handleCodeInApp: true,
@@ -19,6 +18,7 @@ const Register = () => {
     window.localStorage.setItem('emailForRegistration', email);
     // 送信されたらformをからにする
     setEmail('');
+    history.push('/complete');
   };
 
   const RegisterForm = () => (
