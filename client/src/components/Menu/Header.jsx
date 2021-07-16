@@ -7,15 +7,29 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import firebase from 'firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
 const { SubMenu, Item } = Menu;
 
 const Header = () => {
   const [current, setCurrent] = useState('home');
+  let dispatch = useDispatch();
+  let history = useHistory();
+  let { user } = useSelector((state) => ({ ...state }));
 
   const handleClick = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
+  };
+
+  const logout = () => {
+    firebase.auth().signOut();
+    dispatch({
+      type: 'LOGOUT',
+      payload: null,
+    });
+    history.push('/login');
   };
 
   return (
@@ -23,17 +37,31 @@ const Header = () => {
       <Item key="home" icon={<HomeOutlined />}>
         <Link to="/">Home</Link>
       </Item>
-      <Item key="login" icon={<UserOutlined />} className="float-end">
-        <Link to="/login">Login</Link>
-      </Item>
-      <Item key="register" icon={<UserAddOutlined />} className="float-end">
-        <Link to="/register">Register</Link>
-      </Item>
 
-      <SubMenu key="SubMenu" icon={<SettingOutlined />} title="UserName">
-        <Item key="setting:1">Option 1</Item>
-        <Item key="setting:2">Option 2</Item>
-      </SubMenu>
+      {!user && (
+        <Item key="register" icon={<UserAddOutlined />} className="float-right">
+          <Link to="/register">Register</Link>
+        </Item>
+      )}
+
+      {!user && (
+        <Item key="login" icon={<UserOutlined />} className="float-right">
+          <Link to="/login">Login</Link>
+        </Item>
+      )}
+
+      {user && (
+        <SubMenu
+          icon={<SettingOutlined />}
+          title={user.email && user.email.split('@')[0]}
+        >
+          <Item key="setting:1">Option 1</Item>
+          <Item key="setting:2">Option 2</Item>
+          <Item key="logout" icon={<UserOutlined />} onClick={logout}>
+            ログアウト
+          </Item>
+        </SubMenu>
+      )}
     </Menu>
   );
 };
