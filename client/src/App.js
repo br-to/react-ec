@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Header from './components/Menu/Header';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import Complete from './pages/auth/Complete';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
@@ -20,7 +21,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-        console.log('user', user);
+        // console.log('user', user);
         dispatch({
           type: 'LOGGED_IN_USER',
           payload: {
@@ -32,7 +33,7 @@ const App = () => {
     });
     // cleanup
     return () => unsubscribe();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -41,6 +42,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/forgot/password" component={ForgotPassword} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/complete" component={Complete} />
         <Route exact path="/register/complete" component={RegisterComplete} />
