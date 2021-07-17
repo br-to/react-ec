@@ -1,9 +1,27 @@
 const express = require('express');
 const router = express.Router();
 
+
+// middlewares
+const { authCheck } = require('../middlewares/auth');
+
+// controller
 const { createOrUpdate } = require('../controllers/auth');
 
-// route
-router.get('/create-or-update-user', createOrUpdate);
+const myMiddleware = (req, res, next) => {
+  console.log('kobaradesu');
+  next();
+};
 
-module.exports = router
+// route
+//
+router.post('/create-or-update-user', authCheck, createOrUpdate);
+
+router.get('/testing', myMiddleware, (req, res) => {
+  res.json({
+    data: 'Hello Kobara',
+  });
+});
+
+
+module.exports = router;
