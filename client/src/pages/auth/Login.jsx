@@ -3,6 +3,7 @@ import { auth, googleAuthProvider } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import API from '../../utils/API';
 
 const Login = ({ history }) => {
   const dispatch = useDispatch();
@@ -25,13 +26,15 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch({
-        type: 'LOGGED_IN_USER',
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
+      await API.checkAuth(idTokenResult.token);
+
+      // dispatch({
+      //   type: 'LOGGED_IN_USER',
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
       history.push('/');
     } catch (error) {
       setLoading(false);
