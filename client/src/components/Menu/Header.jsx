@@ -52,6 +52,7 @@ const Header = () => {
 
       {user && (
         <SubMenu
+          key="settings"
           icon={<SettingOutlined />}
           title={user.email && user.email.split('@')[0]}
         >
