@@ -13,6 +13,14 @@ const Login = ({ history }) => {
 
   const { user } = useSelector((state) => ({ ...state }));
 
+  const checkRole = (res) => {
+    if (res.data.role === 'admin') {
+      history.push('/admin/dashboard');
+    } else {
+      history.push('./user/history');
+    }
+  };
+
   useEffect(() => {
     if (user && user.token) history.push('/');
   }, [user, history]);
@@ -26,16 +34,22 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      await API.checkAuth(idTokenResult.token);
-
-      // dispatch({
-      //   type: 'LOGGED_IN_USER',
-      //   payload: {
-      //     email: user.email,
-      //     token: idTokenResult.token,
-      //   },
-      // });
-      history.push('/');
+      // backend側から受け取った値をdispatchしてstateに入れている
+      await API.createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+          checkRole(res);
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
       setLoading(false);
       console.error(error);
@@ -83,14 +97,21 @@ const Login = ({ history }) => {
       .then(async (result) => {
         const { user } = result;
         const idTokenResult = await user.getIdTokenResult();
-        dispatch({
-          type: 'LOGGED_IN_USER',
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
-        history.push('/');
+        await API.createOrUpdateUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+            checkRole(res);
+          })
+          .catch((err) => console.log(err));
       })
       .catch((error) => {
         console.log(error);
