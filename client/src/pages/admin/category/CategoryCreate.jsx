@@ -6,12 +6,14 @@ import API from '../../../utils/API';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import CategoryForm from '../../../components/forms/CategoryForm';
+import SearchForm from '../../../components/forms/SearchForm';
 
 const CategoryCreate = () => {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
 
+  const [keyword, setKeyword] = useState('');
   const { user } = useSelector((state) => ({ ...state }));
 
   // リロードされたら毎回カテゴリーを取得する
@@ -58,6 +60,9 @@ const CategoryCreate = () => {
     }
   };
 
+  /* step4 searched */
+  const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -78,8 +83,12 @@ const CategoryCreate = () => {
             save={'登録する'}
           />
 
+          <SearchForm keyword={keyword} setKeyword={setKeyword} />
+
           <hr />
-          {categories.map((c) => (
+
+          {/* step 5　検索のfilter作成 */}
+          {categories.filter(searched(keyword)).map((c) => (
             <div key={c._id} className="alert alert-primary">
               {c.name}
               <span
