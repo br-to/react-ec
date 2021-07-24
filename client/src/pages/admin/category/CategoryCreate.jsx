@@ -75,6 +75,7 @@ const CategoryCreate = () => {
             handleSubmit={handleSubmit}
             name={name}
             setName={setName}
+            save={'登録する'}
           />
 
           <hr />

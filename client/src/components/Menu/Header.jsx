@@ -57,13 +57,13 @@ const Header = () => {
           title={user.email && user.email.split('@')[0]}
         >
           {user && user.role === 'subscriber' && (
-            <Item>
+            <Item key={user.role}>
               <Link to="/user/history">Dashboard</Link>
             </Item>
           )}
 
           {user && user.role === 'admin' && (
-            <Item>
+            <Item key={user.role}>
               <Link to="/admin/dashboard">Dashboard</Link>
             </Item>
           )}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CategoryForm = ({ handleSubmit, name, setName }) => (
+const CategoryForm = ({ handleSubmit, name, setName, save }) => (
   <form onSubmit={handleSubmit}>
     <div className="form-group">
       <input
@@ -20,7 +20,7 @@ const CategoryForm = ({ handleSubmit, name, setName }) => (
       disabled={!name}
       onClick={handleSubmit}
     >
-      カテゴリー編集
+      {save}
     </button>
   </form>
 );

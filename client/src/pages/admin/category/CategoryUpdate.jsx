@@ -53,6 +53,7 @@ const CategoryUpdate = ({ history, match }) => {
             handleSubmit={handleSubmit}
             name={name}
             setName={setName}
+            save={'編集する'}
           />
         </div>
       </div>
