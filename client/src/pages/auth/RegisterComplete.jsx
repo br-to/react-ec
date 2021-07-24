@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import API from '../../utils/API';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
-import RegisterCompleteForm from '../../components/forms/CompleteRegisterForm';
 import CompleteRegistrationForm from '../../components/forms/CompleteRegisterForm';
 
 const RegisterComplete = ({ history }) => {
