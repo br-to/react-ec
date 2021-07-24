@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import API from '../../../utils/API';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import CategoryForm from '../../../components/forms/CategoryForm';
 
 const CategoryCreate = () => {
   const [name, setName] = useState('');
@@ -57,31 +58,6 @@ const CategoryCreate = () => {
     }
   };
 
-  const CategoryForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Category Name"
-        />
-      </div>
-
-      <br />
-
-      <button
-        type="submit"
-        className="btn btn-raised"
-        disabled={!name}
-        onClick={handleSubmit}
-      >
-        カテゴリー登録
-      </button>
-    </form>
-  );
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -94,7 +70,13 @@ const CategoryCreate = () => {
           ) : (
             <h4>カテゴリー登録</h4>
           )}
-          {CategoryForm()}
+
+          <CategoryForm
+            handleSubmit={handleSubmit}
+            name={name}
+            setName={setName}
+          />
+
           <hr />
           {categories.map((c) => (
             <div key={c._id} className="alert alert-primary">
