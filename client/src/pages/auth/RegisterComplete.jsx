@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import API from '../../utils/API';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
+import CompleteRegistrationForm from '../../components/forms/CompleteRegisterForm';
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -69,31 +70,17 @@ const RegisterComplete = ({ history }) => {
     }
   };
 
-  const CompleteRegistrationForm = () => (
-    <form onSubmit={handleSubmit}>
-      <input type="email" className="form-control" value={email} disabled />
-      <br />
-      <input
-        type="password"
-        className="form-control"
-        value={password}
-        onChange={(e) => setPassword(e.currentTarget.value)}
-        placeholder="password"
-        autoFocus
-      />
-      <br />
-
-      <button type="submit" className="btn btn-raised">
-        会員登録完了
-      </button>
-    </form>
-  );
   return (
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <h4>パスワード入力</h4>
-          {CompleteRegistrationForm()}
+          <CompleteRegistrationForm
+            handleSubmit={handleSubmit}
+            email={email}
+            password={password}
+            setPassword={setPassword}
+          />
         </div>
       </div>
     </div>

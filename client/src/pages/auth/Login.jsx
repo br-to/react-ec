@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
+import LoginForm from '../../components/forms/LoginForm';
 
 const Login = ({ history }) => {
   const dispatch = useDispatch();
@@ -57,40 +58,6 @@ const Login = ({ history }) => {
     }
   };
 
-  const LoginForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="email"
-          className="form-control"
-          value={email}
-          onChange={(e) => setEmail(e.currentTarget.value)}
-          autoFocus
-        />
-      </div>
-      <br />
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control"
-          value={password}
-          onChange={(e) => setPassword(e.currentTarget.value)}
-          placeholder="パスワード"
-        />
-      </div>
-      <br />
-
-      <button
-        type="submit"
-        className="btn btn-raised"
-        disabled={!email | (password.length < 6)}
-        onClick={handleSubmit}
-      >
-        ログイン
-      </button>
-    </form>
-  );
-
   const googleLogin = async () => {
     auth
       .signInWithPopup(googleAuthProvider)
@@ -128,7 +95,14 @@ const Login = ({ history }) => {
           ) : (
             <h4>ログイン</h4>
           )}
-          {LoginForm()}
+
+          <LoginForm
+            handleSubmit={handleSubmit}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+          />
 
           <button
             type="submit"

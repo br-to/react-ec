@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { onjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {

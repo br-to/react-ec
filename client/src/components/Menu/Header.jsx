@@ -56,8 +56,17 @@ const Header = () => {
           icon={<SettingOutlined />}
           title={user.email && user.email.split('@')[0]}
         >
-          <Item key="setting:1">Option 1</Item>
-          <Item key="setting:2">Option 2</Item>
+          {user && user.role === 'subscriber' && (
+            <Item key={user.role}>
+              <Link to="/user/history">Dashboard</Link>
+            </Item>
+          )}
+
+          {user && user.role === 'admin' && (
+            <Item key={user.role}>
+              <Link to="/admin/dashboard">Dashboard</Link>
+            </Item>
+          )}
           <Item key="logout" icon={<UserOutlined />} onClick={logout}>
             ログアウト
           </Item>

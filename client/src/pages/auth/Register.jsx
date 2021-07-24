@@ -3,6 +3,7 @@ import { auth } from '../../firebase';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
+import RegisterForm from '../../components/forms/RegisterForm';
 
 const Register = ({ history }) => {
   const [email, setEmail] = useState('');
@@ -28,27 +29,16 @@ const Register = ({ history }) => {
     history.push('/complete');
   };
 
-  const RegisterForm = () => (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        className="form-control"
-        value={email}
-        onChange={(e) => setEmail(e.currentTarget.value)}
-        autoFocus
-      />
-      <br />
-      <button type="submit" disabled={!email} className="btn btn-raised">
-        会員登録
-      </button>
-    </form>
-  );
   return (
     <div className="container p-5">
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <h4>会員登録</h4>
-          {RegisterForm()}
+          <RegisterForm
+            handleSubmit={handleSubmit}
+            email={email}
+            setEmail={setEmail}
+          />
         </div>
       </div>
     </div>

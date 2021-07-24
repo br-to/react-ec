@@ -14,6 +14,8 @@ import RegisterComplete from './pages/auth/RegisterComplete';
 import Complete from './pages/auth/Complete';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import DashBoard from './pages/admin/DashBoard';
+import CategoryCreate from './pages/admin/category/CategoryCreate';
+import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import AdminRoute from './components/routes/AdminRoute';
 import API from './utils/API';
 
@@ -65,6 +67,8 @@ const App = () => {
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />
         <AdminRoute exact path="/admin/dashboard" component={DashBoard} />
+        <AdminRoute exact path="/admin/category" component={CategoryCreate} />
+        <AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate} />
       </Switch>
     </>
   );
