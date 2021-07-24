@@ -48,7 +48,7 @@ class API {
   getCategories () {
     return api.request({
       method: 'GET',
-      url: '/categroies'
+      url: '/categories'
     });
   }
 
@@ -76,7 +76,7 @@ class API {
         authToken
       },
       url: `/category/${slug}`,
-      body: {
+      data: {
         name: category,
       }
     })
@@ -89,7 +89,7 @@ class API {
         authToken
       },
       url: '/category/create',
-      body: {
+      data: {
         name: category,
       }
     })
