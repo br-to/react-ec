@@ -8,7 +8,7 @@ const CategoryForm = ({ handleSubmit, name, setName, save }) => (
         className="form-control"
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
-        placeholder="Category Name"
+        placeholder="カテゴリ名"
       />
     </div>
 

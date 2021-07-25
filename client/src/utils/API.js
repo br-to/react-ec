@@ -94,6 +94,59 @@ class API {
       }
     })
   }
+
+   // Sub Category API
+  getSubs () {
+    return api.request({
+      method: 'GET',
+      url: '/subs'
+    });
+  }
+
+  getSub (slug) {
+    return api.request({
+      method: 'GET',
+      url: `/sub/${slug}`,
+    })
+  }
+
+  removeSub (slug, authToken) {
+    return api.request({
+      method: 'DELETE',
+      headers: {
+        authToken,
+      },
+      url: `/sub/${slug}`,
+    })
+  }
+
+  updateSub (slug, sub, parent, authToken) {
+    return api.request({
+      method: 'PUT',
+      headers: {
+        authToken
+      },
+      url: `/sub/${slug}`,
+      data: {
+        name: sub,
+        parent
+      }
+    })
+  }
+
+  createSub (sub, parent, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      url: '/sub/create',
+      data: {
+        name: sub,
+        parent: parent,
+      }
+    })
+  }
 }
 
 export default new API();
