@@ -95,6 +95,13 @@ class API {
     })
   }
 
+  getCategorySub (_id) {
+    return api.request({
+      method: 'GET',
+      url: `/category/sub/${_id}`
+    })
+  }
+
    // Sub Category API
   getSubs () {
     return api.request({
@@ -145,6 +152,17 @@ class API {
         name: sub,
         parent: parent,
       }
+    })
+  }
+
+  createProduct (product, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      url: '/product',
+      data: product,
     })
   }
 }
