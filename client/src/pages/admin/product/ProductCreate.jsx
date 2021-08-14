@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import API from '../../../utils/API';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
+import FileUpload from '../../../components/forms/FIleUpload';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const initialState = {
   title: '',
@@ -25,6 +27,7 @@ const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
   const [showSub, setShowSub] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -87,6 +90,17 @@ const ProductCreate = () => {
             subOptions={subOptions}
             showSub={showSub}
             setValues={setValues}
+          />
+
+          <div className="col-md-10">
+            {loading ? <LoadingOutlined className="text-danger h1" /> : ''}
+            <hr />
+          </div>
+
+          <FileUpload
+            values={values}
+            setValues={setValues}
+            setLoading={setLoading}
           />
         </div>
       </div>
