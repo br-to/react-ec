@@ -46,8 +46,9 @@ const ProductCreate = () => {
     await API.createProduct(values, user.token)
       .then((res) => {
         console.log(res);
-        setValues(initialState);
+        // setValues(initialState);
         toast.success('商品を作成しました！');
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
