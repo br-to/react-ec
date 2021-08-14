@@ -165,6 +165,32 @@ class API {
       data: product,
     })
   }
+
+  uploadImages (uri, user) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authtoken: user ? user.token : '',
+      },
+      url: '/uploadimages',
+      data: {
+        image: uri,
+      }
+    })
+  }
+
+  removeImage (user, public_id) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authtoken: user ? user.token : '',
+      },
+      url: '/removeimage',
+      data: {
+        public_id
+      },
+    })
+  }
 }
 
 export default new API();
