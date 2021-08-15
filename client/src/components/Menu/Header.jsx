@@ -34,19 +34,19 @@ const Header = () => {
 
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-      <Item key="home" icon={<HomeOutlined />}>
+      <Item key="home" icon={<HomeOutlined />} className="float-left">
         <Link to="/">Home</Link>
       </Item>
 
       {!user && (
         <Item key="register" icon={<UserAddOutlined />} className="float-right">
-          <Link to="/register">Register</Link>
+          <Link to="/register">会員登録</Link>
         </Item>
       )}
 
       {!user && (
         <Item key="login" icon={<UserOutlined />} className="float-right">
-          <Link to="/login">Login</Link>
+          <Link to="/login">ログイン</Link>
         </Item>
       )}
 
@@ -55,6 +55,7 @@ const Header = () => {
           key="settings"
           icon={<SettingOutlined />}
           title={user.email && user.email.split('@')[0]}
+          className="float-right"
         >
           {user && user.role === 'subscriber' && (
             <Item key={user.role}>
