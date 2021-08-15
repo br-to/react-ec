@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import API from '../../../utils/API';
 import ProductCreateForm from '../../../components/forms/ProductCreateForm';
-import FileUpload from '../../../components/forms/FIleUpload';
+import FileUpload from '../../../components/forms/FileUpload';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const initialState = {
