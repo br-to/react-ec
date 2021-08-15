@@ -70,7 +70,7 @@ const ProductCreateForm = ({
           className="form-control"
           onChange={handleChange}
         >
-          <option>Please select</option>
+          <option>配送するか</option>
           <option value="No">No</option>
           <option value="Yes">Yes</option>
         </select>
@@ -90,7 +90,7 @@ const ProductCreateForm = ({
       <div className="form-group">
         <label>色</label>
         <select name="color" className="form-control" onChange={handleChange}>
-          <option>Please select</option>
+          <option>色を選択してください</option>
           {colors.map((c) => (
             <option key={c} value={c}>
               {c}
