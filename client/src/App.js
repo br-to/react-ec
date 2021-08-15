@@ -18,6 +18,8 @@ import CategoryCreate from './pages/admin/category/CategoryCreate';
 import SubUpdate from './pages/admin/sub/SubUpdate';
 import SubCreate from './pages/admin/sub/SubCreate';
 import ProductCreate from './pages/admin/product/ProductCreate';
+import ProductUpdate from './pages/admin/product/ProductUpdate';
+import AllProducts from './pages/admin/product/AllProducts';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import AdminRoute from './components/routes/AdminRoute';
 import API from './utils/API';
@@ -75,6 +77,8 @@ const App = () => {
         <AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate} />
         <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
         <AdminRoute exact path="/admin/product" component={ProductCreate} />
+        <AdminRoute exact path="/admin/products" component={AllProducts} />
+        <AdminRoute exact path="/admin/products/:slug" component={ProductUpdate} />
       </Switch>
     </>
   );

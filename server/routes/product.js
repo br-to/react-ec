@@ -5,10 +5,17 @@ const router = express.Router();
 const { authCheck, adminCheck } = require('../middlewares/auth');
 
 // controller
-const { create, list } = require('../controllers/product');
+const { create, allList, read, update, remove } = require('../controllers/product');
 
 // route
 router.post('/product', authCheck, adminCheck, create);
-router.get('/products', list);
+// count: 取得するproduct情報の上限
+router.get('/products/:count', allList);
+// 商品情報取得
+router.get('/product/:slug', read);
+// 商品編集
+router.put('/product/:slug', authCheck, adminCheck, update);
+// 商品削除
+router.delete('/product/:slug', authCheck, adminCheck, remove);
 
 module.exports = router;

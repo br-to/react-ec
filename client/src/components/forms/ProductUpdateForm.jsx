@@ -3,20 +3,21 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-const ProductCreateForm = ({
+const ProductUpdateForm = ({
   handleSubmit,
   handleChange,
   values,
   handleCategoryChange,
+  categories,
   subOptions,
-  showSub,
-  setValues,
+  arrayOfSubs,
+  setArrayOfSubs,
+  selectedCategory,
 }) => {
   const {
     title,
     description,
     price,
-    categories,
     category,
     subs,
     shipping,
@@ -66,11 +67,11 @@ const ProductCreateForm = ({
       <div className="form-group">
         <label>配送するか</label>
         <select
+          value={shipping === 'Yes' ? 'Yes' : 'No'}
           name="shipping"
           className="form-control"
           onChange={handleChange}
         >
-          <option>配送するか</option>
           <option value="No">No</option>
           <option value="Yes">Yes</option>
         </select>
@@ -89,8 +90,12 @@ const ProductCreateForm = ({
 
       <div className="form-group">
         <label>色</label>
-        <select name="color" className="form-control" onChange={handleChange}>
-          <option>色を選択してください</option>
+        <select
+          value={color}
+          name="color"
+          className="form-control"
+          onChange={handleChange}
+        >
           {colors.map((c) => (
             <option key={c} value={c}>
               {c}
@@ -101,8 +106,12 @@ const ProductCreateForm = ({
 
       <div className="form-group">
         <label>ブランド</label>
-        <select name="brand" className="form-control" onChange={handleChange}>
-          <option>ブランドを選択してください</option>
+        <select
+          value={brand}
+          name="brand"
+          className="form-control"
+          onChange={handleChange}
+        >
           {brands.map((b) => (
             <option key={b} value={b}>
               {b}
@@ -117,8 +126,8 @@ const ProductCreateForm = ({
           name="category"
           className="form-control"
           onChange={handleCategoryChange}
+          value={selectedCategory ? selectedCategory : category._id}
         >
-          <option>カテゴリを選択してください</option>
           {categories.map((c) => (
             <option value={c._id} key={c._id}>
               {c.name}
@@ -127,30 +136,29 @@ const ProductCreateForm = ({
         </select>
       </div>
 
-      {showSub && (
-        <div>
-          <label>サブカテゴリ</label>
-          <Select
-            mode="multiple"
-            style={{ width: '100%' }}
-            name="subs"
-            placeholder="サブカテゴリを選んでね"
-            value={subs}
-            onChange={(value) => setValues({ ...values, subs: value })}
-          >
-            {subOptions.length &&
-              subOptions.map((s) => (
-                <Option key={s._id} value={s._id}>
-                  {s.name}
-                </Option>
-              ))}
-          </Select>
-        </div>
-      )}
+      <div>
+        <label>サブカテゴリ</label>
+        <Select
+          mode="multiple"
+          style={{ width: '100%' }}
+          name="subs"
+          placeholder="サブカテゴリを選んでね"
+          value={arrayOfSubs}
+          onChange={(value) => setArrayOfSubs(value)}
+        >
+          {subOptions.length &&
+            subOptions.map((s) => (
+              <Option key={s._id} value={s._id}>
+                {s.name}
+              </Option>
+            ))}
+        </Select>
+      </div>
+
       <br />
       <button className="btn btn-outline-info">Save</button>
     </form>
   );
 };
 
-export default ProductCreateForm;
+export default ProductUpdateForm;

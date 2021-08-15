@@ -155,6 +155,7 @@ class API {
     })
   }
 
+  // 商品CRUD
   createProduct (product, authToken) {
     return api.request({
       method: 'POST',
@@ -166,6 +167,42 @@ class API {
     })
   }
 
+  getProducts (count) {
+    return api.request({
+      method: 'GET',
+      url: `/products/${count}`,
+    })
+  }
+
+  getProduct (slug) {
+    return api.request({
+      method: 'GET',
+      url: `/product/${slug}`,
+    })
+  }
+
+  updateProduct (slug, product, authToken) {
+    return api.request({
+      method: 'PUT',
+      headers: {
+        authToken,
+      },
+      url: `/product/${slug}`,
+      data: product,
+    })
+  }
+
+  removeProduct (slug, authToken) {
+    return api.request({
+      method: 'DELETE',
+      headers: {
+        authToken,
+      },
+      url: `/product/${slug}`,
+    })
+  }
+
+  // 画像の追加と削除
   uploadImages (uri, user) {
     return api.request({
       method: 'POST',

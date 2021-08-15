@@ -7,37 +7,37 @@ const AdminNav = () => (
       <ul className="nav flex-column">
         <li className="nav-item">
           <Link to="/admin/dashboard" className="nav-link">
-            DashBoard
+            ダッシュボード
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/admin/product" className="nav-link">
-            Product
+            商品作成
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/admin/products" className="nav-link">
-            Products
+            商品一覧
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/admin/category" className="nav-link">
-            Category
+            カテゴリー
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/admin/sub" className="nav-link">
-            Sub Category
+            サブカテゴリー
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/user/password" className="nav-link">
-            Password
+            パスワード再設定
           </Link>
         </li>
       </ul>
