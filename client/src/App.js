@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import Product from './pages/Product';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import { ToastContainer } from 'react-toastify';
@@ -79,6 +80,7 @@ const App = () => {
         <AdminRoute exact path="/admin/product" component={ProductCreate} />
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <AdminRoute exact path="/admin/products/:slug" component={ProductUpdate} />
+        <Route exact path="/products/:slug" component={Product} />
       </Switch>
     </>
   );
