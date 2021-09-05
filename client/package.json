@@ -43,8 +43,10 @@
     "axios": "^0.21.1",
     "react-image-file-resizer": "^0.4.7",
     "react-redux": "^7.2.4",
+    "react-responsive-carousel": "^3.2.21",
     "react-toastify": "^7.0.4",
     "redux": "^4.1.0",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "typewriter-effect": "^2.18.0"
   }
 }
