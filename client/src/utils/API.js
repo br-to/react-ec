@@ -181,6 +181,26 @@ class API {
     })
   }
 
+  // 商品をいくら取得するか、並び順の変更
+  sortProducts (sort, order, page) {
+    return api.request({
+      method: 'POST',
+      data: {
+        sort,
+        order,
+        page,
+      },
+      url: `/products/`,
+    })
+  }
+
+  getProductsCount () {
+    return api.request({
+      method: 'GET',
+      url: '/products/total',
+    })
+  }
+
   updateProduct (slug, product, authToken) {
     return api.request({
       method: 'PUT',
