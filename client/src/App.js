@@ -10,6 +10,8 @@ import Header from './components/Menu/Header';
 import History from './pages/user/History';
 import Wishlist from './pages/user/Wishlist';
 import Password from './pages/user/Password';
+import CategoryHome from './pages/category/CategoryHome';
+import SubCategoryHome from './pages/sub/SubCategoryHome';
 import UserRoute from './components/routes/UserRoute';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import Complete from './pages/auth/Complete';
@@ -81,6 +83,8 @@ const App = () => {
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <AdminRoute exact path="/admin/products/:slug" component={ProductUpdate} />
         <Route exact path="/products/:slug" component={Product} />
+        <Route exact path="/category/:slug" component={CategoryHome} />
+        <Route exact path="/sub/:slug" component={SubCategoryHome} />
       </Switch>
     </>
   );
