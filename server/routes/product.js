@@ -5,7 +5,7 @@ const router = express.Router();
 const { authCheck, adminCheck } = require('../middlewares/auth');
 
 // controller
-const { create, allList, read, update, remove, list, productsCount } = require('../controllers/product');
+const { create, allList, read, update, remove, list, productsCount, productStar, listRelated } = require('../controllers/product');
 
 // route
 router.post('/product', authCheck, adminCheck, create);
@@ -23,5 +23,9 @@ router.put('/product/:slug', authCheck, adminCheck, update);
 router.delete('/product/:slug', authCheck, adminCheck, remove);
 // 商品並び替え
 router.post('/products', list);
+// 商品レビュー情報書き換え
+router.put('/product/star/:productId', authCheck, productStar);
+// 関連商品情報取得
+router.get('/product/related/:productId', listRelated);
 
 module.exports = router;

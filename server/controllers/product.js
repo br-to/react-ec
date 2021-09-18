@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const User = require('../models/user');
 const slugify = require('slugify');
 
 exports.create = async (req, res) => {
@@ -102,5 +103,60 @@ exports.list = async (req, res) => {
 exports.productsCount = async (req, res) => {
   let total = await Product.find({}).estimatedDocumentCount().exec();
   res.json(total);
+}
+
+// レビュー情報を書き換える
+exports.productStar = async (req, res) => {
+  // 商品Id取得
+  const  product = await Product.findById(req.params.productId).exec();
+  // ユーザー情報取得
+  const user = await User.findOne({ email: req.user.email }).exec();
+  const { star } = req.body;
+
+  // 誰が更新したか
+  // 正しくログインしたユーザーが商品にレビューを加えたか確認
+  let exisitingRatingObject = product.ratings.find(
+    (ele) => ele.postedBy.toString() === user._id.toString()
+  );
+
+  // レビューから離れていないユーザーだったらこの処理を入れる
+  if (exisitingRatingObject === undefined) {
+    let ratingAdded = await Product.findByIdAndUpdate(
+      product._id,
+      {
+        $push: { ratings: { star, postedBy: user._id } },
+      },
+      { new: true }
+    ).exec();
+    console.log('ratingAdded', ratingAdded);
+    res.json(ratingAdded);
+  } else {
+    // もしユーザーがすでにレビューから離れていたら更新
+    const ratingUpdated = await Product.updateOne(
+      {
+        ratings: { $elemMatch: exisitingRatingObject },
+      },
+      { $set: { 'ratings.$.star': star } },
+      { new : true }
+    ).exec();
+    console.log('ratingUpdated', ratingUpdated);
+    res.json(ratingUpdated);
+  }
+};
+
+exports.listRelated = async (req, res) => {
+  const product = await Product.findById(req.params.productId).exec();
+
+  const related = await Product.find({
+    _id: { $ne: product._id },
+    category: product.category,
+  })
+  .limit(3)
+  .populate('category')
+  .populate('subs')
+  .populate('postedBy')
+  .exec()
+
+  res.json(related);
 }
 
