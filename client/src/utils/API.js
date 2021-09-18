@@ -248,6 +248,29 @@ class API {
       },
     })
   }
+
+  // レビュー更新
+  updateRate (productId, star, authToken) {
+    return api.request({
+      method: 'PUT',
+      headers: {
+        authToken,
+      },
+      url: `/product/star/${productId}`,
+      data: {
+        star
+      }
+    })
+  }
+
+  getRelatedProducts (productId) {
+    return api.request({
+      method: 'GET',
+      headers: {},
+      url: `/product/related/${productId}`,
+      data: {},
+    })
+  }
 }
 
 export default new API();

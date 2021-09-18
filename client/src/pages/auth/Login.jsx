@@ -15,15 +15,28 @@ const Login = ({ history }) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   const checkRole = (res) => {
-    if (res.data.role === 'admin') {
-      history.push('/admin/dashboard');
+    // from stateを商品詳細ページから受け取る
+    let { from } = history.location.state;
+    if (from) {
+      // from stateが存在する場合そのページに遷移
+      history.push(from);
     } else {
-      history.push('./user/history');
+      if (res.data.role === 'admin') {
+        history.push('/admin/dashboard');
+      } else {
+        history.push('./user/history');
+      }
     }
   };
 
   useEffect(() => {
-    if (user && user.token) history.push('/');
+    let intended = history.location.state;
+    console.log(intended);
+    if (intended) {
+      return;
+    } else {
+      if (user && user.token) history.push('/');
+    }
   }, [user, history]);
 
   const handleSubmit = async (e) => {
