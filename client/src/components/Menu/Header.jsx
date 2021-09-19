@@ -6,6 +6,7 @@ import {
   UserAddOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
+import Search from '../forms/Serach';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -73,6 +74,10 @@ const Header = () => {
           </Item>
         </SubMenu>
       )}
+
+      <Item key="search" className="float-right p-1">
+        <Search />
+      </Item>
     </Menu>
   );
 };
