@@ -6,7 +6,7 @@ import {
   UserAddOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import Search from '../forms/Serach';
+import Search from '../forms/Search';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 import { useDispatch, useSelector } from 'react-redux';
