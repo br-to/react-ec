@@ -230,8 +230,44 @@ const handleStar = (req, res, stars) => {
   });
 };
 
+const handleSub = async (req, res, sub) => {
+  const products = await Product.find({ subs: sub })
+    .populate('category', '_id name')
+    .populate('subs', '_id name')
+    .populate('postedBy', '_id name')
+    .exec();
+  res.json(products);
+}
+
+const handleBrand = async (req, res, brand) => {
+  const products = await Product.find({ brand })
+    .populate('category', '_id name')
+    .populate('subs', '_id name')
+    .populate('postedBy', '_id name')
+    .exec();
+  res.json(products);
+};
+
+const handleColor = async (req, res, color) => {
+  const products = await Product.find({ color })
+    .populate('category', '_id name')
+    .populate('subs', '_id name')
+    .populate('postedBy', '_id name')
+    .exec();
+  res.json(products);
+}
+
+const handleShipping = async (req, res, shipping) => {
+  const products = await Product.find({ shipping })
+    .populate('category', '_id name')
+    .populate('subs', '_id name')
+    .populate('postedBy', '_id name')
+    .exec();
+  res.json(products);
+}
+
 exports.searchFilter = async (req, res) => {
-  const { query, price, category, stars, brand } = req.body;
+  const { query, price, category, stars, sub, brand, color, shipping } = req.body;
 
   if (query) {
     console.log('query-->', query);
@@ -253,8 +289,23 @@ exports.searchFilter = async (req, res) => {
     handleStar(req, res, stars);
   }
 
+  if (sub) {
+    console.log('sub-->', sub);
+    handleSub(req, res, sub);
+  }
+
   if (brand) {
     console.log('brand-->', brand);
     handleBrand(req, res, brand);
+  }
+
+  if (color) {
+    console.log('color-->', color);
+    handleColor(req, res, color);
+  }
+
+  if (shipping) {
+    console.log('shipping-->', shipping);
+    handleShipping(req, res, shipping);
   }
 };
