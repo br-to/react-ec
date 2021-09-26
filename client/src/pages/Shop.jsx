@@ -3,8 +3,13 @@ import API from '../utils/API';
 import ProductsCard from '../components/cards/ProductsCard';
 import { useSelector } from 'react-redux';
 import { Menu, Slider, Checkbox } from 'antd';
-import { DollarOutlined, DownCircleOutlined } from '@ant-design/icons';
+import {
+  DollarOutlined,
+  DownCircleOutlined,
+  StarOutlined,
+} from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import Star from '../components/forms/Star';
 const { SubMenu } = Menu;
 
 const Shop = () => {
@@ -14,6 +19,7 @@ const Shop = () => {
   const [ok, setOk] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
+  const [star, setStar] = useState('');
 
   let { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
@@ -106,13 +112,33 @@ const Shop = () => {
     fetchProducts({ category: inTheState });
   };
 
+  // 5. レビューの検索
+  const handleStar = (num) => {
+    dispatch({
+      type: 'SEARCH_QUERY',
+      payload: { text: '' },
+    });
+    setStar(num);
+    fetchProducts({ stars: num });
+  };
+
+  const showStars = () => (
+    <>
+      <Star clickStar={handleStar} numberOfStars={5} />
+      <Star clickStar={handleStar} numberOfStars={4} />
+      <Star clickStar={handleStar} numberOfStars={3} />
+      <Star clickStar={handleStar} numberOfStars={2} />
+      <Star clickStar={handleStar} numberOfStars={1} />
+    </>
+  );
+
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-md-3 pt-2">
           <h4>サイドメニュー</h4>
           <hr />
-          <Menu defaultOpenKeys={['1', '2']} mode="inline">
+          <Menu defaultOpenKeys={['1', '2', '3']} mode="inline">
             <SubMenu
               key="1"
               title={
@@ -140,6 +166,17 @@ const Shop = () => {
               }
             >
               {showCategories()}
+            </SubMenu>
+
+            <SubMenu
+              key="3"
+              title={
+                <span className="h6">
+                  <StarOutlined /> レビュー
+                </span>
+              }
+            >
+              {showStars()}
             </SubMenu>
           </Menu>
         </div>
