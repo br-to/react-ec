@@ -262,13 +262,22 @@ class API {
       }
     })
   }
-
+  // 関連商品の取得
   getRelatedProducts (productId) {
     return api.request({
       method: 'GET',
       headers: {},
       url: `/product/related/${productId}`,
       data: {},
+    })
+  }
+  // テキストで検索をかける
+  fetchProductsByFilter (query) {
+    return api.request({
+      method: 'POST',
+      headers: {},
+      url: '/search/filter',
+      data: query
     })
   }
 }

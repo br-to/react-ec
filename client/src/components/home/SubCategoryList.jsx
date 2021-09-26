@@ -20,10 +20,11 @@ const SubCategoryList = () => {
 
   const subCategoryShow = () => {
     return subs.map((c) => (
-      <div className="m-3 btn btn-lg btn-outlined-primary btn-raised">
-        <Link to={`/sub/${c.slug}`} key={c._id}>
-          {c.name}
-        </Link>
+      <div
+        key={c._id}
+        className="m-3 btn btn-lg btn-outlined-primary btn-raised"
+      >
+        <Link to={`/sub/${c.slug}`}>{c.name}</Link>
       </div>
     ));
   };
