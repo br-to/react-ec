@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import Header from './components/Menu/Header';
+import Drawer from './components/drawer/SideDrawer';
 import History from './pages/user/History';
 import Wishlist from './pages/user/Wishlist';
 import Password from './pages/user/Password';
@@ -26,6 +27,7 @@ import AllProducts from './pages/admin/product/AllProducts';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import AdminRoute from './components/routes/AdminRoute';
 import Shop from './pages/Shop';
+import Cart from './pages/Cart'
 import API from './utils/API';
 
 import { auth } from './firebase';
@@ -65,6 +67,7 @@ const App = () => {
     <>
       <Header />
       <ToastContainer />
+      <Drawer />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
@@ -87,6 +90,7 @@ const App = () => {
         <Route exact path="/category/:slug" component={CategoryHome} />
         <Route exact path="/sub/:slug" component={SubCategoryHome} />
         <Route exact path="/shop" component={Shop} />
+        <Route exact path="/cart" component={Cart} />
       </Switch>
     </>
   );
