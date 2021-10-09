@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { Card, Tabs, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Carousel } from 'react-responsive-carousel';
@@ -9,11 +9,43 @@ import NoImage from '../../images/noimage.png';
 import ProductItemList from './ProductItemList';
 import StarRatingModal from '../modal/StarRatingModal';
 import { ShowAverage } from '../../functions/Ratings';
+import { useDispatch } from 'react-redux';
+import _ from 'lodash';
 
 const { TabPane } = Tabs;
 
 const SingleProduct = ({ product, starClick, star }) => {
   const { title, description, images, _id } = product;
+  const [tooltip, setTooltip] = useState('カートイン');
+
+  const dispatch = useDispatch();
+  const handleAddCart = () => {
+    let cart = [];
+
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+    }
+
+    cart.push({
+      ...product,
+      count: 1,
+    });
+
+    let unique = _.uniqWith(cart, _.isEqual);
+
+    localStorage.setItem('cart', JSON.stringify(unique));
+    dispatch({
+      type: 'ADD_CART',
+      payload: unique,
+    });
+    dispatch({
+      type: 'SET_DRAWER',
+      payload: true,
+    });
+    setTooltip('カートに入れました');
+  };
 
   return (
     <>
@@ -51,11 +83,13 @@ const SingleProduct = ({ product, starClick, star }) => {
         )}
         <Card
           actions={[
-            <>
-              <ShoppingCartOutlined className="text-success" />
-              <br />
-              Add to Cart
-            </>,
+            <Tooltip title={tooltip}>
+              <a onClick={handleAddCart}>
+                <ShoppingCartOutlined className="text-primary" />
+                <br />
+                カートに入れる
+              </a>
+            </Tooltip>,
             <Link to="/">
               <HeartOutlined className="text-info" />
               <br />

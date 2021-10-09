@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Menu } from 'antd';
+import { Menu, Badge } from 'antd';
 import {
   HomeOutlined,
   UserOutlined,
   UserAddOutlined,
   SettingOutlined,
+  ShoppingCartOutlined,
 } from '@ant-design/icons';
 import Search from '../forms/Search';
 import { Link } from 'react-router-dom';
@@ -18,7 +19,7 @@ const Header = () => {
   const [current, setCurrent] = useState('home');
   let dispatch = useDispatch();
   let history = useHistory();
-  let { user } = useSelector((state) => ({ ...state }));
+  let { user, cart } = useSelector((state) => ({ ...state }));
 
   const handleClick = (e) => {
     setCurrent(e.key);
@@ -37,6 +38,14 @@ const Header = () => {
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
       <Item key="home" icon={<HomeOutlined />} className="float-left">
         <Link to="/">Home</Link>
+      </Item>
+
+      <Item key="cart" icon={<ShoppingCartOutlined />} className="float-left">
+        <Link to="/cart">
+          <Badge offset={[4, 0]} count={cart.length}>
+            カート
+          </Badge>
+        </Link>
       </Item>
 
       {!user && (
