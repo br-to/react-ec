@@ -1,13 +1,46 @@
-import React from 'react';
-import { Card } from 'antd';
+import React, { useState } from 'react';
+import { Card, Tooltip } from 'antd';
 import NoImage from '../../images/noimage.png';
 import { EyeOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { ShowAverage } from '../../functions/Ratings';
+import { useDispatch } from 'react-redux';
+import _ from 'lodash';
 const { Meta } = Card;
 
 const ProductsCard = ({ product }) => {
   const { title, price, description, images, slug } = product;
+  const [tooltip, setTooltip] = useState('カートイン');
+
+  const dispatch = useDispatch();
+  const handleAddCart = () => {
+    let cart = [];
+
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+    }
+
+    cart.push({
+      ...product,
+      count: 1,
+    });
+
+    let unique = _.uniqWith(cart, _.isEqual);
+
+    localStorage.setItem('cart', JSON.stringify(unique));
+    dispatch({
+      type: 'ADD_CART',
+      payload: unique,
+    });
+    dispatch({
+      type: 'SET_DRAWER',
+      payload: true,
+    });
+    setTooltip('カートに入れました');
+  };
+
   return (
     <>
       {product && product.ratings && product.ratings.length > 0 ? (
@@ -30,11 +63,13 @@ const ProductsCard = ({ product }) => {
             <br />
             商品詳細へ
           </Link>,
-          <>
-            <ShoppingCartOutlined className="text-primary" />
-            <br />
-            カートに入れる
-          </>,
+          <Tooltip title={tooltip}>
+            <a onClick={handleAddCart}>
+              <ShoppingCartOutlined className="text-primary" />
+              <br />
+              カートに入れる
+            </a>
+          </Tooltip>,
         ]}
         className="m-2"
       >
