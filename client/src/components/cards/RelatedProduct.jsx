@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-// import API from '../../utils/API';
+import React from 'react';
 import ProductsCard from '../cards/ProductsCard';
-// import LoadingCard from '../cards/LoadingCard';
 
 const RelatedProduct = ({ related }) => {
   return (

@@ -1,14 +1,22 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ProductCartInCheckout from '../components/cards/ProductCartInCheckout';
+import API from '../utils/API';
 
-const Cart = () => {
+const Cart = ({ history }) => {
   const { cart, user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
-
   const getTotal = () => {
     return cart.reduce((l, m) => l + m.count * m.price, 0);
+  };
+
+  const saveAddOrderDb = async () => {
+    await API.userCart(cart, user.token)
+      .then((res) => {
+        console.log('cart post res', res);
+        if (res.data.ok) history.push('/chekcout/address');
+      })
+      .catch((err) => console.log('cart save err', err));
   };
 
   const showCartItem = () => (
@@ -61,6 +69,7 @@ const Cart = () => {
           <hr />
           {user ? (
             <button
+              onClick={saveAddOrderDb}
               className="btn btn-sm btn-primary mt-2"
               disabled={!cart.length}
             >
@@ -74,7 +83,7 @@ const Cart = () => {
               }}
             >
               <button className="btn btn-sm btn-primary mt-2">
-                チェックアウト
+                チェックアウト前にログイン
               </button>
             </Link>
           )}
