@@ -21,11 +21,10 @@ const ProductCartInCheckout = ({ p }) => {
         cart = JSON.parse(localStorage.getItem('cart'));
       }
 
-      cart.map((product, i) => {
-        if (product._id === p._id) {
-          cart[i].color = e.target.value;
-        }
-      });
+      cart.map(
+        (product, i) =>
+          (cart[i].color = product._id === p._id ? e.target.value : '')
+      );
 
       localStorage.setItem('cart', JSON.stringify(cart));
       dispatch({
@@ -50,11 +49,9 @@ const ProductCartInCheckout = ({ p }) => {
       }
     }
 
-    cart.map((product, i) => {
-      if (product._id === p._id) {
-        cart[i].count = count;
-      }
-    });
+    cart.map(
+      (product, i) => (cart[i].count = product._id === p._id ? count : '')
+    );
 
     localStorage.setItem('cart', JSON.stringify(cart));
     dispatch({
@@ -71,11 +68,9 @@ const ProductCartInCheckout = ({ p }) => {
         cart = JSON.parse(localStorage.getItem('cart'));
       }
 
-      cart.map((product, i) => {
-        if (product._id === p._id) {
-          cart.splice(i, 1);
-        }
-      });
+      cart.map((product, i) =>
+        product._id === p._id ? cart.splice(i, 1) : ''
+      );
 
       localStorage.setItem('cart', JSON.stringify(cart));
       dispatch({
