@@ -280,6 +280,56 @@ class API {
       data: query
     })
   }
+
+  // カート情報をDBに保存する
+  userCart (cart, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      url: '/user/cart',
+      data: {
+        cart
+      }
+    })
+  }
+
+  // カート情報を表示
+  getCart (authToken) {
+    return api.request({
+      method: 'GET',
+      headers: {
+        authToken
+      },
+      url: '/user/cart'
+    })
+  }
+
+  // カート情報を削除
+  removeCart (authToken) {
+    return api.request({
+      method: 'Delete',
+      headers: {
+        authToken
+      },
+      url: '/user/cart'
+    })
+  }
+
+  // 住所を登録する
+  saveAddress (authToken, address) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      url: '/user/address',
+      data: {
+        address
+      }
+    })
+  }
 }
 
 export default new API();
