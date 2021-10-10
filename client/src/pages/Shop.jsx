@@ -77,9 +77,13 @@ const Shop = () => {
   // 2.テキストで検索できるようにする
   useEffect(() => {
     // 何もしないとテキストを変更するたびにリクエストが走ってしまうためリクエストを少し遅らせる
+    // テキストが入ってこないとuseEffectが発動しないのでテキストが存在しない場合はloadProductsを入れる
     const delayed = setTimeout(() => {
       fetchProducts({ query: text });
     }, 300);
+    if (!text) {
+      loadingProducts();
+    }
     return () => clearTimeout(delayed);
   }, [text]);
 
