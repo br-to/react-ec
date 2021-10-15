@@ -330,6 +330,52 @@ class API {
       }
     })
   }
+
+  // クーポン作成
+  createCoupon (coupon, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      url: '/coupon',
+      data: {
+        coupon
+      }
+    })
+  }
+
+  // クーポン一覧取得
+  listCoupons () {
+    return api.request({
+      method: 'GET',
+      url: '/coupons',
+    })
+  }
+
+  // クーポン削除
+  deleteCoupon (couponId, authToken) {
+    return api.request({
+      method: 'DELETE',
+      headers: {
+        authToken
+      },
+      url: `/coupon/${couponId}`
+    })
+  }
+
+  applyUserCoupon (coupon, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      data: {
+        coupon
+      },
+      url: '/user/cart/coupon'
+    })
+  }
 }
 
 export default new API();
