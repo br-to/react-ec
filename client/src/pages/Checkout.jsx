@@ -10,6 +10,10 @@ const Checkout = () => {
   const [total, setTotal] = useState(0);
   const [address, setAddress] = useState('');
   const [saveAddress, setSaveAddress] = useState(false);
+  const [coupon, setCoupon] = useState('');
+  const [discountPrice, setDiscountPrice] = useState(0);
+  const [discountError, setDiscountError] = useState('');
+
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
@@ -37,6 +41,8 @@ const Checkout = () => {
       await API.removeCart(user.token).then((res) => {
         setProducts([]);
         setTotal(0);
+        setDiscountPrice(0);
+        setCoupon('');
         toast.success('カートを空にしました');
       });
     }
@@ -51,20 +57,77 @@ const Checkout = () => {
     });
   };
 
+  const appplyDiscountCoupon = async () => {
+    console.log('click', coupon);
+    await API.applyUserCoupon(coupon, user.token).then((res) => {
+      if (res.data) {
+        setDiscountPrice(res.data);
+        dispatch({
+          type: 'APPLY_COUPON',
+          payload: true,
+        });
+      }
+      if (res.data.err) {
+        setDiscountError(res.data.err);
+        dispatch({
+          type: 'APPLY_COUPON',
+          payload: false,
+        });
+      }
+    });
+  };
+
+  const showAddress = () => (
+    <>
+      <h4>Delivery Address</h4>
+      <br />
+      <br />
+      <ReactQuil theme="snow" value={address} onChange={setAddress} />
+      <button className="btn btn-primary mt-2" onClick={saveAddressToDb}>
+        Save
+      </button>
+    </>
+  );
+
+  const showProductSummary = () =>
+    products.map((p, i) => (
+      <div key={i}>
+        <p>
+          {p.product.title} ({p.color}) x {p.count} ={' '}
+          {p.product.price * p.count}円
+        </p>
+      </div>
+    ));
+
+  const showApplyCoupon = () => (
+    <>
+      <input
+        type="text"
+        value={coupon}
+        onChange={(e) => {
+          setCoupon(e.target.value);
+          setDiscountError('');
+        }}
+        className="form-control"
+      />
+      <button onClick={appplyDiscountCoupon} className="btn btn-primary mt-2">
+        適用する
+      </button>
+    </>
+  );
+
   return (
     <div className="row">
       <div className="col-md-6">
-        <h4>Delivery Address</h4>
-        <br />
-        <br />
-        <ReactQuil theme="snow" value={address} onChange={setAddress} />
-        <button className="btn btn-primary mt-2" onClick={saveAddressToDb}>
-          Save
-        </button>
+        {showAddress()}
+
         <hr />
         <h4>Got Coupon?</h4>
         <br />
-        coupon input and apply button
+        {showApplyCoupon()}
+        {discountError && (
+          <p className="bg-danger p-2 mt-2">クーポンが適用できません</p>
+        )}
       </div>
 
       <div className="col-md-6">
@@ -72,16 +135,12 @@ const Checkout = () => {
         <hr />
         <p>{products.length}商品</p>
         <hr />
-        {products.map((p, i) => (
-          <div key={i}>
-            <p>
-              {p.product.title} ({p.color}) x {p.count} ={' '}
-              {p.product.price * p.count}円
-            </p>
-          </div>
-        ))}
+        {showProductSummary()}
         <hr />
         <p>合計金額: {total}円</p>
+        {discountPrice > 0 && (
+          <p className="bg-success p-2 mt-2">支払額は{discountPrice}円です</p>
+        )}
 
         <div className="row">
           <div className="col-md-6">
@@ -89,7 +148,7 @@ const Checkout = () => {
               className="btn btn-primary"
               disabled={!saveAddress || !products.length}
             >
-              Place Order
+              次に進む
             </button>
           </div>
 
