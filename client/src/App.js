@@ -27,6 +27,7 @@ import ProductUpdate from './pages/admin/product/ProductUpdate';
 import AllProducts from './pages/admin/product/AllProducts';
 import CategoryUpdate from './pages/admin/category/CategoryUpdate';
 import AdminRoute from './components/routes/AdminRoute';
+import Coupon from './pages/admin/coupon/Coupon';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart'
 import API from './utils/API';
@@ -87,6 +88,7 @@ const App = () => {
         <AdminRoute exact path="/admin/product" component={ProductCreate} />
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <AdminRoute exact path="/admin/products/:slug" component={ProductUpdate} />
+        <AdminRoute exact path="/admin/coupon" component={Coupon} />
         <Route exact path="/products/:slug" component={Product} />
         <Route exact path="/category/:slug" component={CategoryHome} />
         <Route exact path="/sub/:slug" component={SubCategoryHome} />
