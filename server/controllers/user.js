@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Product = require("../models/product");
 const Cart = require("../models/cart");
+const Coupon = require("../models/coupon");
 
 // カート情報をチェックアウトに渡す
 exports.userCart = async (req, res) => {
@@ -78,4 +79,39 @@ exports.postUserAddress = async (req, res) => {
     { address: req.body.address }
     ).exec();
   res.json({ ok: true });
+};
+
+// クーポンを適用する
+exports.saveCoupon = async (req, res) => {
+  const { coupon } = req.body;
+  console.log('COUPON', coupon);
+
+  const validCoupon = await Coupon.findOne({ name: coupon }).exec();
+  if (validCoupon === null) {
+    return res.json({
+      err: 'Invalid coupon',
+    })
+  }
+  console.log('Valid Coupon', validCoupon);
+
+  const user = await User.findOne({ email: req.user.email }).exec();
+
+  let { products, cartTotal } = await Cart.findOne({ orderdBy: user._id })
+    .populate('products.product', '_id title price')
+    .exec();
+
+  console.log('cartTotal', cartTotal, 'discount', validCoupon.discount);
+
+  let totalAfterDiscount = (
+    cartTotal -
+    (cartTotal * validCoupon.discount) / 100
+  ).toFixed(0); // 99
+
+  Cart.findOneAndUpdate(
+    { orderdBy: user._id },
+    { totalAfterDiscount },
+    { new: true }
+  );
+
+  res.json(totalAfterDiscount);
 };
