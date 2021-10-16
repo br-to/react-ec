@@ -376,6 +376,19 @@ class API {
       url: '/user/cart/coupon'
     })
   }
+
+  createPaymentIntent (coupon, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      data: {
+        couponApplied: coupon,
+      },
+      url: '/create-payment-intent'
+    })
+  }
 }
 
 export default new API();
