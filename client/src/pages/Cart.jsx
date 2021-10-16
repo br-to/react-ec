@@ -14,7 +14,7 @@ const Cart = ({ history }) => {
     await API.userCart(cart, user.token)
       .then((res) => {
         console.log('cart post res', res);
-        if (res.data.ok) history.push('/chekcout/address');
+        if (res.data.ok) history.push('/checkout/address');
       })
       .catch((err) => console.log('cart save err', err));
   };
