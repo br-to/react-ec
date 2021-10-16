@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import { toast } from 'react-toastify';
 import API from '../utils/API';
 
-const Checkout = () => {
+const Checkout = ({ history }) => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [address, setAddress] = useState('');
@@ -147,6 +147,7 @@ const Checkout = () => {
             <button
               className="btn btn-primary"
               disabled={!saveAddress || !products.length}
+              onClick={() => history.push('/checkout/payment')}
             >
               次に進む
             </button>
