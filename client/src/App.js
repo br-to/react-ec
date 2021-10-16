@@ -15,6 +15,8 @@ import CategoryHome from './pages/category/CategoryHome';
 import SubCategoryHome from './pages/sub/SubCategoryHome';
 import UserRoute from './components/routes/UserRoute';
 import Checkout from './pages/Checkout';
+import Payment from './pages/Payment';
+import OrderComplete from './pages/OrderComplete';
 import RegisterComplete from './pages/auth/RegisterComplete';
 import Complete from './pages/auth/Complete';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -94,7 +96,9 @@ const App = () => {
         <Route exact path="/sub/:slug" component={SubCategoryHome} />
         <Route exact path="/shop" component={Shop} />
         <Route exact path="/cart" component={Cart} />
-        <UserRoute exact path="/chekcout/address" component={Checkout} />
+        <UserRoute exact path="/checkout/address" component={Checkout} />
+        <UserRoute exact path="/checkout/payment" component={Payment} />
+        <UserRoute exact path="/checkout/complete" component={OrderComplete} />
       </Switch>
     </>
   );
