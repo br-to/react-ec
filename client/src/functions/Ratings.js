@@ -6,10 +6,8 @@ export const ShowAverage = (p) => {
     const ratingsArray = p.ratings;
     let total = [];
     let length = ratingsArray.length;
-    console.log('length', length);
     // star arrayだけ取り出す
     ratingsArray.map((r) => total.push(r.star));
-    console.log('total', total);
     // total配列の合計
     let totalReduced = total.reduce((l, m) => l + m);
     let average = (totalReduced * 5) / (length * 5);

@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
+const Order = require("../models/order");
 
 // カート情報をチェックアウトに渡す
 exports.userCart = async (req, res) => {
@@ -115,3 +116,31 @@ exports.saveCoupon = async (req, res) => {
 
   res.json(totalAfterDiscount);
 };
+
+// オーダー作成
+exports.createOrder = async (req, res) => {
+  const { paymentIntent } = req.body.stripeResponse;
+
+  const user = await User.findOne({ email: req.user.email }).exec();
+  const { products } = await Cart.findOne({ orderdBy: user._id }).exec();
+
+  let newOrder = await new Order({
+    products,
+    paymentIntent,
+    orderdBy: user._id
+  }).save();
+
+  let bulkOption = products.map((item) => {
+    return {
+      updateOne: {
+        filter: { _id: item.product._id },
+        update: { $inc: { quantity: -item.count, sold: +item.count }},
+      },
+    };
+  });
+
+  let updated = await Product.bulkWrite(bulkOption, {});
+  console.log('new order saved', newOrder);
+  res.json({ ok: true });
+
+}

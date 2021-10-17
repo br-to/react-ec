@@ -23,7 +23,8 @@ const ProductCartInCheckout = ({ p }) => {
 
       cart.map(
         (product, i) =>
-          (cart[i].color = product._id === p._id ? e.target.value : '')
+          (cart[i].color =
+            product._id === p._id ? e.target.value : cart[i].color)
       );
 
       localStorage.setItem('cart', JSON.stringify(cart));
@@ -50,7 +51,8 @@ const ProductCartInCheckout = ({ p }) => {
     }
 
     cart.map(
-      (product, i) => (cart[i].count = product._id === p._id ? count : '')
+      (product, i) =>
+        (cart[i].count = product._id === p._id ? count : cart[i].count)
     );
 
     localStorage.setItem('cart', JSON.stringify(cart));

@@ -14,6 +14,9 @@ const ProductsCard = ({ product }) => {
 
   const dispatch = useDispatch();
   const handleAddCart = () => {
+    // 在庫なしの場合カートイン不可
+    if (product.quantity < 1) return;
+
     let cart = [];
 
     if (typeof window !== 'undefined') {
@@ -63,11 +66,13 @@ const ProductsCard = ({ product }) => {
             <br />
             商品詳細へ
           </Link>,
-          <Tooltip title={tooltip}>
-            <a onClick={handleAddCart}>
+          <Tooltip
+            title={product.quantity < 1 ? 'カートインできません' : tooltip}
+          >
+            <a onClick={handleAddCart} disabled={product.quantity < 1}>
               <ShoppingCartOutlined className="text-primary" />
               <br />
-              カートに入れる
+              {product.quantity < 1 ? '在庫なし' : 'カートに入れる'}
             </a>
           </Tooltip>,
         ]}

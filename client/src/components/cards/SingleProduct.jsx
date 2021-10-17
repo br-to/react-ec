@@ -20,6 +20,9 @@ const SingleProduct = ({ product, starClick, star }) => {
 
   const dispatch = useDispatch();
   const handleAddCart = () => {
+    // 在庫なしの場合カートイン不可
+    if (product.quantity < 1) return;
+
     let cart = [];
 
     if (typeof window !== 'undefined') {
@@ -83,11 +86,13 @@ const SingleProduct = ({ product, starClick, star }) => {
         )}
         <Card
           actions={[
-            <Tooltip title={tooltip}>
-              <a onClick={handleAddCart}>
+            <Tooltip
+              title={product.quantity < 1 ? 'カートインできません' : tooltip}
+            >
+              <a onClick={handleAddCart} diabled={product.quantity < 1}>
                 <ShoppingCartOutlined className="text-primary" />
                 <br />
-                カートに入れる
+                {product.quantity < 1 ? '在庫なし' : 'カートに入れる'}
               </a>
             </Tooltip>,
             <Link to="/">
