@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [price, setPrice] = useState([0, 0]);
+  const [price, setPrice] = useState([0, 10000]);
   const [ok, setOk] = useState(false);
   const [categories, setCategories] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
@@ -332,7 +332,7 @@ const Shop = () => {
                 range
                 value={price}
                 onChange={handleSlider}
-                max="100"
+                max="10000"
               />
             </SubMenu>
 
