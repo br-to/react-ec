@@ -364,6 +364,7 @@ class API {
     })
   }
 
+  // クーポンの適用
   applyUserCoupon (coupon, authToken) {
     return api.request({
       method: 'POST',
@@ -377,6 +378,7 @@ class API {
     })
   }
 
+  // 支払い情報をバックエンドに渡す
   createPaymentIntent (coupon, authToken) {
     return api.request({
       method: 'POST',
@@ -387,6 +389,20 @@ class API {
         couponApplied: coupon,
       },
       url: '/create-payment-intent'
+    })
+  }
+
+  // オーダーを作成する
+  createOrder (stripeResponse, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      data: {
+        stripeResponse
+      },
+      url: '/user/order'
     })
   }
 }
