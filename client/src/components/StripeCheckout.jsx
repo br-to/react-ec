@@ -47,7 +47,24 @@ const StripeCheckout = () => {
       // here you get result after successful payment
       // create order and save in database for admin to process
       // empty user cart from redux store and local storage
-      console.log(JSON.stringify(payload, null, 4));
+      await API.createOrder(payload, user.token).then(async (res) => {
+        if (res.data.ok) {
+          // localStorageからカート削除
+          if (typeof window !== 'undefined') localStorage.removeItem('cart');
+          // reduxからカート情報、クーポン情報削除
+          dispatch({
+            type: 'ADD_TO_CART',
+            payload: [],
+          });
+
+          dispatch({
+            type: 'APPLY_COUPON',
+            payload: false,
+          });
+
+          await API.removeCart(user.token);
+        }
+      });
       setError(null);
       setProcessing(false);
       setSucceeded(true);
