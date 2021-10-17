@@ -5,14 +5,14 @@ import UserNav from '../../components/Menu/UserNav';
 import { Link } from 'react-router-dom';
 import PaymentInfo from '../../components/cards/PaymentInfo';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import Invoice from '../../components/orders/Invoice';
 const History = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(async () => {
     await API.getOrders(user.token).then((res) => {
-      console.log(res.data);
       setOrders(res.data);
     });
   }, []);
@@ -55,6 +55,16 @@ const History = () => {
     </table>
   );
 
+  const pdfDownload = (order) => (
+    <PDFDownloadLink
+      document={<Invoice order={order} />}
+      fileName="invoice.pdf"
+      className="btn btn-sm btn-block btn-outline-primary"
+    >
+      PDFをダウンロードする
+    </PDFDownloadLink>
+  );
+
   const showEachOrders = () =>
     orders.map((order, i) => (
       <div key={i} className="m-5 p-3 card">
@@ -62,9 +72,7 @@ const History = () => {
         <PaymentInfo order={order} />
         {showOrderInTable(order)}
         <div className="row">
-          <div className="col">
-            <p>PDF ダウンロード</p>
-          </div>
+          <div className="col">{pdfDownload(order)}</div>
         </div>
       </div>
     ));
