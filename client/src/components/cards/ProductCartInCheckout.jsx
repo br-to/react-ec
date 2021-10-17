@@ -8,6 +8,7 @@ import {
   CloseCircleOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const ProductCartInCheckout = ({ p }) => {
   const colors = ['Black', 'Brown', 'Silver', 'White', 'Blue'];
@@ -92,7 +93,9 @@ const ProductCartInCheckout = ({ p }) => {
             <ModalImage small={NoImage} large={NoImage} />
           )}
         </td>
-        <td>{p.title}</td>
+        <td>
+          <Link to={`/products/${p.slug}`}>{p.title}</Link>
+        </td>
         <td>{p.price}</td>
         <td>{p.brand}</td>
         <td>
