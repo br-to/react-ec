@@ -405,6 +405,18 @@ class API {
       url: '/user/order'
     })
   }
+
+  // 注文履歴を表示
+  getOrders (authToken) {
+    return api.request({
+      method: 'GET',
+      headers: {
+        authToken
+      },
+      data: {},
+      url: '/user/orders'
+    })
+  }
 }
 
 export default new API();
