@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PaymentInfo = ({ order }) => (
+const PaymentInfo = ({ order, showStatus = true }) => (
   <div>
     <p>
       <span>注文峰号: {order.paymentIntent.id}</span> /{' '}
@@ -12,10 +12,12 @@ const PaymentInfo = ({ order }) => (
         注文日:
         {new Date(order.paymentIntent.created * 1000).toLocaleString('ja-JP')}
       </span>
-      /{' '}
-      <span className="badge bg-primary text-white">
-        注文ステータス: {order.orderStatus}
-      </span>
+      / <br />
+      {showStatus && (
+        <span className="badge bg-primary text-white">
+          注文ステータス: {order.orderStatus}
+        </span>
+      )}
     </p>
   </div>
 );
