@@ -417,6 +417,33 @@ class API {
       url: '/user/orders'
     })
   }
+
+  // 管理画面で注文情報取得
+  adminGetOrders (authToken) {
+    return api.request({
+      method: 'GET',
+      headers: {
+        authToken
+      },
+      data: {},
+      url: '/admin/orders'
+    })
+  }
+
+  // 注文のステータスを更新する
+  adminOrderStatus (orderId, orderStatus, authToken) {
+    return api.request({
+      method: 'PUT',
+      headers: {
+        authToken
+      },
+      data: {
+        orderId,
+        orderStatus,
+      },
+      url: '/admin/order-status'
+    })
+  }
 }
 
 export default new API();
