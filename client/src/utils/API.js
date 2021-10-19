@@ -444,6 +444,44 @@ class API {
       url: '/admin/order-status'
     })
   }
+
+  // wishlist追加
+  addToWishlist (productId, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      data: {
+        productId
+      },
+      url: `/user/wishlist`
+    })
+  }
+
+  // wishlist取得
+  wishlist (authToken) {
+    return api.request({
+      method: 'GET',
+      headers: {
+        authToken
+      },
+      data: {},
+      url: '/user/wishlist'
+    })
+  }
+
+  // wishlist削除
+  removeWishlist (productId, authToken) {
+    return api.request({
+      method: 'PUT',
+      headers: {
+        authToken
+      },
+      data: {},
+      url: `/user/wishlist/${productId}`
+    })
+  }
 }
 
 export default new API();
