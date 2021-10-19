@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Card, Tabs, Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
-import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import API from '../../utils/API';
+import {
+  HeartOutlined,
+  HeartFilled,
+  ShoppingCartOutlined,
+} from '@ant-design/icons';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import StarRatings from 'react-star-ratings';
@@ -9,7 +13,8 @@ import NoImage from '../../images/noimage.png';
 import ProductItemList from './ProductItemList';
 import StarRatingModal from '../modal/StarRatingModal';
 import { ShowAverage } from '../../functions/Ratings';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import _ from 'lodash';
 
 const { TabPane } = Tabs;
@@ -17,6 +22,8 @@ const { TabPane } = Tabs;
 const SingleProduct = ({ product, starClick, star }) => {
   const { title, description, images, _id } = product;
   const [tooltip, setTooltip] = useState('カートイン');
+  const [wishlist, setWishlist] = useState(false);
+  const { user } = useSelector((state) => ({ ...state }));
 
   const dispatch = useDispatch();
   const handleAddCart = () => {
@@ -48,6 +55,26 @@ const SingleProduct = ({ product, starClick, star }) => {
       payload: true,
     });
     setTooltip('カートに入れました');
+  };
+
+  const handleWishlist = async () => {
+    await API.addToWishlist(_id, user.token).then((res) => {
+      if (res.data.ok) {
+        console.log(res.data);
+        setWishlist(true);
+        toast.success('ウィッシュリストに入れました!');
+      }
+    });
+  };
+
+  const removeWishlist = async () => {
+    await API.removeWishlist(_id, user.token).then((res) => {
+      if (res.data.ok) {
+        console.log(res.data);
+        setWishlist(false);
+        toast.error('ウィッシュリストを削除しました');
+      }
+    });
   };
 
   return (
@@ -95,11 +122,15 @@ const SingleProduct = ({ product, starClick, star }) => {
                 {product.quantity < 1 ? '在庫なし' : 'カートに入れる'}
               </a>
             </Tooltip>,
-            <Link to="/">
-              <HeartOutlined className="text-info" />
+            <a onClick={wishlist ? removeWishlist : handleWishlist}>
+              {wishlist ? (
+                <HeartFilled className="text-danger" />
+              ) : (
+                <HeartOutlined className="text-danger" />
+              )}
               <br />
-              Add to Wishlist
-            </Link>,
+              {wishlist ? 'remove wishlist' : 'add wishlist'}
+            </a>,
             <StarRatingModal>
               {/* StarRatingコンポーネントの中身がchildrenになる */}
               <StarRatings
