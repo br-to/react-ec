@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema(
       default: []
     },
     address: String, // 配送先
+    wishlist: [{ type: ObjectId, ref: "Product" }], // wishlist
   },
   { timestamps: true } // 時間の設定
 );
