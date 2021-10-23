@@ -58,6 +58,7 @@ const Order = ({ orders, updateOrderStatus }) => {
                   onChange={(e) => updateOrderStatus(order._id, e.target.value)}
                 >
                   <option value="unprocessed">unprocessed</option>
+                  <option value="cashondelivery">cashondelivery</option>
                   <option value="processing">processing</option>
                   <option value="dispatched">dispatched</option>
                   <option value="cancelled">cancelled</option>
