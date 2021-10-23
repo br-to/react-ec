@@ -14,7 +14,8 @@ const {
   getOrders,
   addToWishlist,
   wishlist,
-  removeWishlist
+  removeWishlist,
+  createCashOrder
 } = require('../controllers/user');
 
 router.post('/user/cart', authCheck, userCart); // save cart
@@ -26,6 +27,7 @@ router.post('/user/address', authCheck, postUserAddress); // save address
 router.post('/user/cart/coupon', authCheck, saveCoupon)
 // order
 router.post('/user/order', authCheck, createOrder);
+router.post('/user/cash-order', authCheck, createCashOrder);
 router.get('/user/orders', authCheck, getOrders);
 // wishlist
 router.post('/user/wishlist', authCheck, addToWishlist);
