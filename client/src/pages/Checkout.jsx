@@ -14,7 +14,8 @@ const Checkout = ({ history }) => {
   const [discountPrice, setDiscountPrice] = useState(0);
   const [discountError, setDiscountError] = useState('');
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user, cod } = useSelector((state) => ({ ...state }));
+  const isCoupon = useSelector((state) => state.coupon);
   const dispatch = useDispatch();
 
   useEffect(async () => {
@@ -75,6 +76,36 @@ const Checkout = ({ history }) => {
         });
       }
     });
+  };
+
+  const handleCashOrder = async () => {
+    await API.createCashOrder(cod, isCoupon, user.token).then(async (res) => {
+      if (res.data.ok) {
+        // localStorageからカート削除
+        if (typeof window !== 'undefined') localStorage.removeItem('cart');
+        // reduxからカート情報、クーポン情報削除
+        dispatch({
+          type: 'ADD_TO_CART',
+          payload: [],
+        });
+
+        dispatch({
+          type: 'APPLY_COUPON',
+          payload: false,
+        });
+
+        dispatch({
+          type: 'COD',
+          payload: false,
+        });
+
+        await API.removeCart(user.token);
+        setTimeout(() => {
+          history.push('/checkout/complete');
+        }, 1000);
+      }
+    });
+    history.push('/checkout/complete');
   };
 
   const showAddress = () => (
@@ -144,13 +175,23 @@ const Checkout = ({ history }) => {
 
         <div className="row">
           <div className="col-md-6">
-            <button
-              className="btn btn-primary"
-              disabled={!saveAddress || !products.length}
-              onClick={() => history.push('/checkout/payment')}
-            >
-              次に進む
-            </button>
+            {cod ? (
+              <button
+                className="btn btn-primary"
+                disabled={!saveAddress || !products.length}
+                onClick={handleCashOrder}
+              >
+                代引きで支払う
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                disabled={!saveAddress || !products.length}
+                onClick={() => history.push('/checkout/payment')}
+              >
+                次に進む
+              </button>
+            )}
           </div>
 
           <div className="col-md-6">

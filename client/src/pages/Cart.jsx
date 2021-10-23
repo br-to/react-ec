@@ -1,16 +1,30 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ProductCartInCheckout from '../components/cards/ProductCartInCheckout';
 import API from '../utils/API';
 
 const Cart = ({ history }) => {
   const { cart, user } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
   const getTotal = () => {
     return cart.reduce((l, m) => l + m.count * m.price, 0);
   };
 
   const saveAddOrderDb = async () => {
+    await API.userCart(cart, user.token)
+      .then((res) => {
+        console.log('cart post res', res);
+        if (res.data.ok) history.push('/checkout/address');
+      })
+      .catch((err) => console.log('cart save err', err));
+  };
+
+  const saveCashAddOrderDb = async () => {
+    dispatch({
+      type: 'COD',
+      payload: true,
+    });
     await API.userCart(cart, user.token)
       .then((res) => {
         console.log('cart post res', res);
@@ -68,13 +82,23 @@ const Cart = ({ history }) => {
           合計: <b>{getTotal()}円</b>
           <hr />
           {user ? (
-            <button
-              onClick={saveAddOrderDb}
-              className="btn btn-sm btn-primary mt-2"
-              disabled={!cart.length}
-            >
-              チェックアウト
-            </button>
+            <>
+              <button
+                onClick={saveAddOrderDb}
+                className="btn btn-sm btn-primary mt-2"
+                disabled={!cart.length}
+              >
+                チェックアウト
+              </button>
+              <br />
+              <button
+                onClick={saveCashAddOrderDb}
+                className="btn btn-sm btn-primary mt-2"
+                disabled={!cart.length}
+              >
+                代引きで購入
+              </button>
+            </>
           ) : (
             <Link
               to={{
