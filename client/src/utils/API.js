@@ -482,6 +482,18 @@ class API {
       url: `/user/wishlist/${productId}`
     })
   }
+
+  // 代引き注文作成
+  createCashOrder (COD, isCoupon, authToken) {
+    return api.request({
+      method: 'POST',
+      headers: {
+        authToken
+      },
+      data: { couponApplied: isCoupon, COD },
+      url: '/user/cash-order'
+    })
+  }
 }
 
 export default new API();

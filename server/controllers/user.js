@@ -3,6 +3,7 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 const Coupon = require("../models/coupon");
 const Order = require("../models/order");
+const uniqid = require('uniqid');
 
 // カート情報をチェックアウトに渡す
 exports.userCart = async (req, res) => {
@@ -75,7 +76,7 @@ exports.removeUserCart = async (req, res) => {
 
 //  ユーザーの住所を登録する
 exports.postUserAddress = async (req, res) => {
-  const userAddress = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { email: req.user.email },
     { address: req.body.address }
     ).exec();
@@ -97,7 +98,7 @@ exports.saveCoupon = async (req, res) => {
 
   const user = await User.findOne({ email: req.user.email }).exec();
 
-  let { products, cartTotal } = await Cart.findOne({ orderdBy: user._id })
+  let { cartTotal } = await Cart.findOne({ orderdBy: user._id })
     .populate('products.product', '_id title price')
     .exec();
 
@@ -139,7 +140,7 @@ exports.createOrder = async (req, res) => {
     };
   });
 
-  let updated = await Product.bulkWrite(bulkOption, {});
+  await Product.bulkWrite(bulkOption, {});
   console.log('new order saved', newOrder);
   res.json({ ok: true });
 }
@@ -156,7 +157,7 @@ exports.getOrders = async (req, res) => {
 exports.addToWishlist = async (req, res) => {
   const { productId } = req.body;
 
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { email: req.user.email },
     { $addToSet: { wishlist: productId } }
   ).exec();
@@ -175,10 +176,57 @@ exports.wishlist = async (req, res) => {
 
 exports.removeWishlist = async (req, res) => {
   const { productId } = req.params;
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { email: req.user.email },
     { $pull: { wishlist: productId } }
   ).exec();
 
   res.json({ ok: true });
 }
+
+// CODオーダー作成
+exports.createCashOrder = async (req, res) => {
+  const { COD, couponApplied } = req.body;
+
+  if (!COD) return res.status(401).send('代引き購入できませんん');
+
+  const user = await User.findOne({ email: req.user.email }).exec();
+  const { products, cartTotal, totalAfterDiscount } = await Cart.findOne({ orderdBy: user._id }).exec();
+
+  let finalAmount = 0;
+
+  if (couponApplied && totalAfterDiscount) {
+    finalAmount = totalAfterDiscount * 100;
+  } else {
+    finalAmount = cartTotal * 100;
+  }
+
+  let newOrder = await new Order({
+    products: products,
+    paymentIntent: {
+      id: uniqid(),
+      amount: finalAmount,
+      currency: 'jpy',
+      status: 'cashondelivery',
+      created: Date.now(),
+      payment_method_types: ['cash'],
+    },
+    orderdBy: user._id,
+    orderStatus: 'cashondelivery'
+  }).save();
+
+  let bulkOption = products.map((item) => {
+    return {
+      updateOne: {
+        filter: { _id: item.product._id },
+        update: { $inc: { quantity: -item.count, sold: +item.count }},
+      },
+    };
+  });
+
+  await Product.bulkWrite(bulkOption, {});
+  console.log('new order saved', newOrder);
+  res.json({ ok: true });
+}
+
+
